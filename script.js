@@ -43,17 +43,17 @@ var main = function (input) {
       computerCard = cards.pop();
       computerHand.push(computerCard);
       computerAddedCard = `${computerHand[i].name} of ${computerHand[i].suit}`;
-      computerFirstCard = `${computerCard.name} of ${computerCard.suit}`;
+      computerFirstCard = `${computerHand[0].name} of ${computerHand[0].suit}`;
       showComputerHand += computerAddedCard;
-      addComputerRank += Number(computerHand[i].rank);
+      addComputerRank += parseInt(computerHand[i].value);
+      //--------------------------------------------------------------//
+      ////////// SOME PROBLEMS WITH MY CALCULATIONSSSSS!!!! ////////////
+      //-------------------------------------------------------------//
       showComputerRank =
-        parseInt(computerHand[0].rank) + parseInt(addComputerRank);
+        parseInt(computerHand[0].value) + parseInt(addComputerRank);
       console.log(`show computer hand: ${showComputerHand}`);
       console.log(`show computer rank: ${showComputerRank}`);
       i += 1;
-      if (showComputerRank > 21) {
-        return `Player wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand}<br>Computer Hand: ${computerFirstCard} ${showComputerHand}`;
-      }
     }
 
     playerCard = cards.pop();
@@ -67,30 +67,35 @@ var main = function (input) {
 
     // Next game mode 1: Hit > give one card to player. Otherwise game mode 2: stand > end player turn
     mode = "hit or stand";
-    return `Your first card is ${playerCard.name} of ${playerCard.suit}, and the computer's first card is ${computerCard.name} of ${computerCard.suit}.<br><br>Key in 'hit' to get another card, or key in 'stand' to end your turn.<br><br>Current Player Hand: ${playerHand[0].name} of ${playerHand[0].suit}`;
+    return `Your first card is ${playerHand[0].name} of ${playerHand[0].suit}, and the computer's first card is ${computerHand[0].name} of ${computerHand[0].suit}.<br><br>Key in 'hit' to get another card, or key in 'stand' to end your turn.<br><br>Current Player Hand: ${playerHand[0].name} of ${playerHand[0].suit}`;
   }
 };
+
+//-------------------------------------------------------//
+/////// RUN FUNCTION TO SEE IF ACE 11 or 1 better? ///////
+//-----------------------------------------------------//
 
 //----------------------------------------//
 /////// RUN FUNCTION TO SEE WHO WINS///////
 //--------------------------------------//
 
 var determineWinner = function () {
+  mode = "first card";
   if (
     showPlayerRank > showComputerRank &&
     showPlayerRank < 22 &&
     showComputerRank < 22
   ) {
-    return `Player wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand}<br>Computer Hand: ${computerFirstCard} ${showComputerHand}`;
+    return `Player wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br>Computer Hand: ${computerFirstCard} ${showComputerHand} (Total Sum: ${showComputerRank})<br><br>Click submit to restart the game and draw a new card!`;
   }
-  if (addedScorePlayer < showComputerRank && showComputerRank < 22) {
-    return `Computer wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand}<br>Computer Hand: ${computerFirstCard} ${showComputerHand}`;
+  if (showPlayerRank < showComputerRank && showComputerRank < 22) {
+    return `Computer wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br>Computer Hand: ${computerFirstCard} ${showComputerHand} (Total Sum: ${showComputerRank})<br><br>Click submit to restart the game and draw a new card!`;
   }
-  if (addedScorePlayer > 21) {
-    return `Player loses!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand}<br>Computer Hand: ${computerFirstCard} ${showComputerHand}`;
+  if (showPlayerRank > 21) {
+    return `Player loses!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br>Computer Hand: ${computerFirstCard} ${showComputerHand} (Total Sum: ${showComputerRank})<br><br>Click submit to restart the game and draw a new card!`;
   }
   if (showComputerRank > 21) {
-    return `Player wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand}<br>Computer Hand: ${computerFirstCard} ${showComputerHand}`;
+    return `Player wins!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br>Computer Hand: ${computerFirstCard} ${showComputerHand} (Total Sum: ${showComputerRank})<br><br>Click submit to restart the game and draw a new card!`;
   }
 };
 
@@ -98,34 +103,48 @@ var determineWinner = function () {
 /////// RUN IF FUNCTION: HIT OR STAND ///////
 //----------------------------------------//
 
-var index = 1;
-
 var runPlayerChoice = function (input) {
   if (input == "hit") {
     var playerAddedCard = cards.pop();
     playerHand.push(playerAddedCard);
     console.log(`${playerHand[1].name} of ${playerHand[1].suit}`);
 
+    var index = 1;
     while (index < playerHand.length) {
       playerAddedCard = `${playerHand[index].name} of ${playerHand[index].suit}`;
-      playerFirstCard = `${playerCard.name} of ${playerCard.suit}`;
+      playerFirstCard = `${playerHand[0].name} of ${playerHand[0].suit}`;
       showPlayerHand += playerAddedCard;
-      addPlayerRank += parseInt(playerHand[index].rank);
-      showPlayerRank = parseInt(playerHand[0].rank) + parseInt(addPlayerRank);
-      console.log(showPlayerHand);
-      console.log(showPlayerRank);
+      //---------------------------------------------------------------//
+      ////////// SOME PROBLEMS WITH MY CALCULATIONSSSSS!!!! ////////////
+      //-------------------------------------------------------------//
+      // addPlayerRank += parseInt(playerHand[index].value);
+      // showPlayerRank = parseInt(playerHand[0].value) + parseInt(addPlayerRank);
+      // console.log(showPlayerHand);
+      // console.log(showPlayerRank);
+      // console.log(addPlayerRank);
+
       if (showPlayerRank > 21 && showComputerRank < 21) {
         mode = "first card";
-        return `Oh no you burst! Hit "Submit" button to try again!`;
+        return `Oh no you burst! Hit "Submit" button to try again!<br><br>Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br>Computer Hand: ${computerFirstCard} ${showComputerHand} (Total Sum: ${showComputerRank})`;
       }
       index += 1;
       return `You have chosen to "hit", and your additional card is ${playerAddedCard}. <br><br>Current Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br><br> Total number of card drawn by computer: ${computerHand.length}`;
     }
   } else if (input == "stand") {
     mode = "determine winner";
-    return `You have chosen to "stand". Click the "Submit" button to see if you win!<br><br>Current Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})`;
+    return `You have chosen to "stand". Click the "Submit" button to see if you win!<br><br>Current Player Hand: ${playerFirstCard} ${showPlayerHand} (Total Sum: ${showPlayerRank})<br> Total number of card drawn by computer: ${computerHand.length}`;
   } else input != "hit" && input != "stand";
   return 'Pls key in only either "hit" or "stand" to proceed.';
+};
+
+//---------------------------------//
+/////// CALCULATION FUNCTION ///////
+//-------------------------------//
+
+var calculateCards = function () {
+  showPlayerRank = playerHand.reduce((sum, playerHand) => {
+    return sum + playerHand.value;
+  }, 0);
 };
 
 //-------------------------------//
@@ -154,11 +173,27 @@ var makeDeck = function () {
       } else if (cardName == 13) {
         cardName = "King";
       }
+
       var card = {
         name: cardName,
         suit: currentSuit,
         rank: rankCounter,
+        value: rankCounter,
       };
+
+      //-----------------------------------------------//
+      /////// CHANGE VALUE OF PICTURE CARD TO 10 ///////
+      //---------------------------------------------//
+
+      if (
+        cardName == "Ace" ||
+        cardName == "Jack" ||
+        cardName == "Queen" ||
+        cardName == "King"
+      ) {
+        card.value = 10;
+      }
+
       cardDeck.push(card);
       rankCounter += 1;
     }
